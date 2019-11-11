@@ -3,38 +3,61 @@ const router = Router();
 const fs = require('fs');
 const uuid = require('uuid/v4');
 
-let json_pacientes = fs.readFileSync('src/pacientes.json', 'utf-8');
-const pacientes = JSON.parse(json_pacientes);
-let json_examenes = fs.readFileSync('src/examen.json', 'utf-8');
-const examenes = JSON.parse(json_examenes);
+let json_users = fs.readFileSync('src/users.json', 'utf-8');
+const users_ = JSON.parse(json_users);
+let json_drinks = fs.readFileSync('src/drinks.json', 'utf-8');
+const drinks_ = JSON.parse(json_drinks);
 let titulo;
+
+const findObject = (tabla, id) => {
+    for (let row in tabla) {
+        if (row[0] == id) {
+            return row
+        }
+    }
+}
+
 router.get('/', (req, res) => {
-    res.render('index', {
-        pacientes
+    res.render('Login');
+});
+
+router.get('/user', (req, res) => {
+    res.render('user');
+});
+
+router.get('/user/:id', (req, res) => {
+    let usuario = findObject(users_, req.params.id)
+    res.render('user', {
+        usuario
     });
 });
 
-router.get('/paciente', (req, res) => {
-    res.render('Paciente');
-});
-
-router.get('/examen/:id', (req, res) => {
-    let idp = req.params.id;
-    res.render('examen', {
-        pacientes,
-        idp
+router.get('/users', (req, res) => {
+    res.render('users', {
+        users_
     });
 });
 
+router.get('/drink', (req, res) => {
+    res.render('drink');
+});
 
+router.get('/drink:id', (req, res) => {
+    let drink = findObject(drinks_, req.params.id)
+    res.render('drink', {
+        drink
+    });
+});
 
+router.get('/drinks', (req, res) => {
+    res.render('drinks', {
+        drinks_
+    });
+});
 
-router.get('/examenes/:id', (req, res) => {
-    let idp = req.params.id;
-    res.render('examenes', {
-        pacientes,
-        examenes,
-        idp
+router.get('/takeorder', (req, res) => {
+    res.render('takeorder', {
+        drinks_
     });
 });
 
