@@ -1,0 +1,27 @@
+<% title="Login | Dispensador" %>
+    <% include partials/header %>
+        <div class="container login-container">
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-6 login-form-2">
+                    <h3>iniciar sesion</h3>
+                    <form id='formLogin' method="POST" action="access">
+                        <div class="form-group">
+                            <input type="text" id="user" name="user" class="form-control" placeholder="Usuario *" value="" />
+                        </div>
+                        <div class="form-group">
+                            <input type="password" id="pass" name="pass" class="form-control" placeholder="contraseña *" value="" />
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="btnSubmit" value="iniciar" />
+                        </div>
+                    </form>
+                    <div class="row">
+                        <h5 id="ErorMensaje" style="color: red;">
+                            <%=resul%>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="/js/login.js"></script>
+        <% include partials/footer %>

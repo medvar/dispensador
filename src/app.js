@@ -1,23 +1,53 @@
 const path = require('path');
 const morgan = require('morgan');
 const express = require('express');
-const app = express();
+const uuid = require('uuid/v4');
+const Request = require("request");
+const cors = require('cors');
+const bodyParser = require('body-parser');
 
+var session = require('cookie-session');
+const DB = require('./api/db');
+
+
+const app = express();
 //configuracion
 app.set('port', 5000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-//middleares
+//middleares 
 app.use(morgan('dev'));
-app.use(express.urlencoded({ extended: false }));
+app.use(session({
+    secret: 'my cats name again',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: false, // key
+        maxAge: null
+    }
+}))
 
-//routes
-app.use(require('./routes/index'));
+app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+app.use(cors({
+    credentials: true,
+    origin: 'http://localhost:5000'
+}));
 
 //static
 app.use(express.static(path.join(__dirname, '/public')));
 
+
+app.use(express.json());
+app.use(express.urlencoded({
+    extended: true
+}));
+
+
+//routes
+require('./routes/index')(app, uuid, DB, Request);
 
 // 404 handler
 app.use((req, res, next) => {

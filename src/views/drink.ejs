@@ -1,0 +1,37 @@
+<% title="Drink" %>
+    <% include partials/header %>
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <form action="/drink<%=action%>" method="post">
+                    <div class="card card-body">
+                        <div class="row col-12">
+                            <a href="/drinks" class="mb-2 col-3 btn btn-outline-primary">
+                                <i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i></a>
+                            <h3 class="col-8" style="color: steelblue; text-align: center;">Bebida</h3>
+                        </div>
+                        <div class="form-group col-12">
+                            <label for="name">Nombre</label>
+                            <input type="text" name="name" class="form-control" id="name" placeholder="Nombre" required value="<%=drink.name%>">
+                        </div>
+                        <div class="form-group col-12">
+                            <label>Ingredientes</label>
+                        </div>
+                        <div class="form-group col-12">
+                            <label for="ingre1">Ingrediente 1</label>
+                            <input type="number" name="ingre1" class="form-control" id="ingre1" placeholder="Ingrediente 1" required value="<%=drink.ingre1%>">
+                        </div>
+                        <div class="form-group col-12">
+                            <label for="ingre2">Ingrediente 2</label>
+                            <input type="number" name="ingre2" class="form-control" id="ingre2" placeholder="Ingrediente 2" required value="<%=drink.ingre2%>">
+                        </div>
+                        <div class="form-group col-12">
+                            <label for="ingre3">Ingrediente 3</label>
+                            <input type="number" name="ingre3" class="form-control" id="ingre3" placeholder="Ingrediente 3" required value="<%=drink.ingre3%>">
+                        </div>
+                        <input type="submit" class="btn btn-outline-success" value="Aceptar">
+                    </div>
+                </form>
+            </div>
+        </div>
+        </div>
+        <% include partials/footer %>
