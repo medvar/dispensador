@@ -1,4 +1,4 @@
-<% title="Orders" %>
+<% title="Ordenes" %>
     <% include partials/header %>
         <div class="container">
             <div class="row d-flex justify-content-center">
@@ -25,8 +25,10 @@
                             <span class="Opcion">
                                 Opciones
                             </span>
-                            <a href="/order/<%=order.id%>"> <button type="button" class="m-1 btn btn-lg btn-outline-info">Ver orden</button></a>
-                            <input type="button" onclick="cancelOrder('<%=order.id%>')" class="m-1 btn btn-lg btn-outline-danger">Cancelar orden</input>
+                            <a href="/takeorder/<%=order.id%>"> <button type="button" class="m-1 btn btn-lg btn-outline-info">Ver orden</button></a>
+ <form action="/ordercancel/<%=order.id%>" method="delete">
+                            <input type="submit" class="m-1 btn btn-lg btn-outline-danger" value='Cancelar orden'></input>
+</form>
                         </div>
                     </div>
                     <% }) %>

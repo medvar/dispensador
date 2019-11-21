@@ -24,6 +24,9 @@ module.exports = (app, uuid, DB, Request, access) => {
 
         next()
     }
+    app.get('/', acceso, (req, res, next) => {
+        res.render('home', { user: req.session.user });
+    });
     app.get('/home', acceso, (req, res, next) => {
         res.render('home', { user: req.session.user });
     });
@@ -176,22 +179,82 @@ module.exports = (app, uuid, DB, Request, access) => {
     })
 
     app.get('/takeorder', acceso, (req, res, next) => {
-        res.render('takeorder', {
-            drinks_
+        let drinks_ = DB.getList('drinks')
+        let user_= DB.findObject('users',req.session.user) 
+        let datetime = new Date(Date.now()).toLocaleString();
+        res.render('order', {
+            drinks_,
+            action: '',
+            drink:'',
+            user:user_.user,
+            state:'Pendiente',
+            date:datetime
         });
     });
 
     app.get('/orders', acceso, (req, res, next) => {
+        let orders_ = DB.getList('orders')
         res.render('orders', {
             orders_
         });
     });
 
-    app.get('/order:id', acceso, (req, res, next) => {
-        let order = DB.findObject(orders_, req.params.id)
+    app.get('/takeorder/:id', acceso, (req, res, next) => {
+        let drinks_ = []//DB.getList('drinks')
+        let order_= DB.findObject('orders',req.params.id) 
+        let dri= DB.findObject('drinks',order_.drink) 
+        let use= DB.findObject('users',order_.user) 
         res.render('order', {
-            order
+            drinks_,
+            action: '/' + req.params.id,
+            drink:dri.name,
+            user:use.user,
+            state:order_.state,
+            date:order_.date
         });
     });
-
+    
+    app.post('/order', acceso, (req, res, next) => {
+        let { drink,date } = req.body
+        console.log(req.body)
+        let neworder = {
+            id: uuid(),
+            drink,
+            user:req.session.user,
+            state:'Pendiente',
+            date
+        }
+        if (!drink || !date) {
+            res.status(400).send('Error Campos Vacios');
+            return;
+        }
+        DB.insert("orders", neworder)
+        let orders_ = DB.getList('orders')
+        res.render('orders', {
+            orders_
+        });
+    })
+    
+    app.delete('/ordercancel/:id', acceso, (req, res, next) => {
+        let cancelorder= DB.findObject('orders',req.params.id) 
+        if(cancelorder['state']=='Pendiente')
+        cancelorder['state']= 'Cancelado'
+        
+        DB.update("orders", cancelorder)
+        let orders_ = DB.getList('orders')
+        res.render('orders', {
+            orders_
+        });
+    })
+    app.put('/orderfinish/:id', acceso, (req, res, next) => {
+        let finishorder= DB.findObject('orders',req.params.id) 
+        if(finishorder['state']=='Pendiente')
+        finishorder['state']= 'Finalizado'
+        
+        DB.update("orders", finishorder)
+        let orders_ = DB.getList('orders')
+        res.render('orders', {
+            orders_
+        });
+    })
 }

@@ -1,7 +1,6 @@
 $(document).ready(function() {
 
     $('.element-card').on('click', function() {
-        console.log('s')
         if ($(this).hasClass('open')) {
             $(this).removeClass('open');
             $(this).addClass('col-5');

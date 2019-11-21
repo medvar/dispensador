@@ -14,7 +14,10 @@
                 <%let cont=1; drinks_.forEach(function (drink){%>
                     <div class="element-card col-5">
                         <div class="front-facing">
-                            <span class="abr"> <%=drink.name%></span>
+                           <i class="fas fa-cocktail abr"></i>
+                             <p class="title" style="font-size: 14px">
+                             <%=drink.name%>
+                            </p>
                             <i class="fa fa-angle-double-right atomic-number" aria-hidden="true"></i>
                             <span class="atomic-mass"><%=cont++%></span>
                         </div>
