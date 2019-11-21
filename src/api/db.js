@@ -29,11 +29,22 @@ const access = (user, pass) => {
     return result
 }
 
+const getOrder =()=>{
+    let data=getList('orders')
+    let result = false
+    data.forEach(row => {
+        if(row['state']=='Pendiente')
+        result = row
+    });
+    return result
+    }
+
 const getList = (table) => {
     let json_ = fs.readFileSync('src/' + table + '.json', 'utf-8');
     console.log(json_)
     return JSON.parse(json_);
 }
+
 
 const update = (table, registry) => {
     let json_ = fs.readFileSync('src/' + table + '.json', 'utf-8');

@@ -246,15 +246,4 @@ module.exports = (app, uuid, DB, Request, access) => {
             orders_
         });
     })
-    app.put('/orderfinish/:id', acceso, (req, res, next) => {
-        let finishorder= DB.findObject('orders',req.params.id) 
-        if(finishorder['state']=='Pendiente')
-        finishorder['state']= 'Finalizado'
-        
-        DB.update("orders", finishorder)
-        let orders_ = DB.getList('orders')
-        res.render('orders', {
-            orders_
-        });
-    })
 }
