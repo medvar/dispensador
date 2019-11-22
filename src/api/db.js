@@ -2,7 +2,7 @@ const fs = require('fs');
 
 
 
-const findObject = (table, id, col = "id") => {
+const findObject = (table, id, col = "id" , list=false) => {
     let json_ = fs.readFileSync('src/' + table + '.json', 'utf-8');
     let data = JSON.parse(json_);
     let result = []
@@ -11,9 +11,15 @@ const findObject = (table, id, col = "id") => {
             result.push(row);
         }
     });
-    if (result.length > 0)
+    console.log(result)
+    
+    if (result.length == 1){
+        if(list)
+        return result
+        else
         return result[0]
-    else
+        }
+        else
         return result
 }
 
@@ -32,16 +38,20 @@ const access = (user, pass) => {
 const getOrder =()=>{
     let data=getList('orders')
     let result = false
+    let ya=0;
     data.forEach(row => {
-        if(row['state']=='Pendiente')
-        result = row
+        if(row['state']=='Pendiente' && ya ==0)
+        {
+        ya =1;
+        result= row
+        }
     });
     return result
     }
 
 const getList = (table) => {
     let json_ = fs.readFileSync('src/' + table + '.json', 'utf-8');
-    console.log(json_)
+    //console.log(json_)
     return JSON.parse(json_);
 }
 
@@ -77,5 +87,6 @@ module.exports = {
     update,
     insert,
     getList,
-    access
+    access,
+    getOrder
 };

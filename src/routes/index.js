@@ -81,7 +81,11 @@ module.exports = (app, uuid, DB, Request, access) => {
             email
         }
         if (!user || !pass || !name || !email) {
-            res.status(400).send('Error Campos Vacios');
+            res.render('Error', {
+            link:'user',
+            mensaje:'Error campos Vacios'
+        });
+            //res.status(400).send('Error Campos Vacios');
             return;
         }
         DB.insert("users", newuser)
@@ -101,7 +105,11 @@ module.exports = (app, uuid, DB, Request, access) => {
             email
         }
         if (!user || !pass || !name || !email) {
-            res.status(400).send('Error Campos Vacios');
+            //res.status(400).send('Error Campos Vacios');
+             res.render('Error', {
+            link:'user/'+req.params.id,
+            mensaje:'Error campos Vacios'
+        });
             return;
         }
         DB.update("users", newuser)
@@ -130,9 +138,9 @@ module.exports = (app, uuid, DB, Request, access) => {
         let drink = {
             id: '',
             name: '',
-            ingre1: '',
-            ingre2: '',
-            ingre3: ''
+            ingre1: '0',
+            ingre2: '0',
+            ingre3: '0'
         }
         res.render('drink', { drink, action: '' });
     });
@@ -148,9 +156,22 @@ module.exports = (app, uuid, DB, Request, access) => {
             ingre3
         }
         if (!name || !ingre1 || !ingre2 || !ingre3) {
-            res.status(400).send('Error Campos Vacios');
+           // res.status(400).send('Error Campos Vacios');
+            res.render('Error', {
+            link:'drink',
+            mensaje:'Error campos Vacios'
+        });
             return;
         }
+        console.log(parseInt(ingre1)+parseInt(ingre2)+parseInt(ingre3))
+        if((parseInt(ingre1)+parseInt(ingre2)+parseInt(ingre3))>375)
+        {
+            res.render('Error', {
+            link:'drink',
+            mensaje:'El vaso en muy pequeño para esa cantidad'
+        });
+            return;
+            }
         DB.insert("drinks", newdrink)
         let drinks_ = DB.getList('drinks')
         res.render('drinks', {
@@ -168,9 +189,22 @@ module.exports = (app, uuid, DB, Request, access) => {
             ingre3
         }
         if (!name || !ingre1 || !ingre2 || !ingre3) {
-            res.status(400).send('Error Campos Vacios');
+            //res.status(400).send('Error Campos Vacios');
+             res.render('Error', {
+            link:'drink/'+req.params.id,
+            mensaje:'Error campos Vacios'
+        });
             return;
         }
+        console.log((ingre1+ingre2+ingre3))
+        if((ingre1+ingre2+ingre3)>375)
+        {
+             res.render('Error', {
+            link:'drink/'+req.params.id,
+            mensaje:'El vaso en muy pequeño para esa cantidad'
+        });
+            return;
+            }
         DB.update("drinks", Updatedrink)
         let drinks_ = DB.getList('drinks')
         res.render('drinks', {
@@ -194,6 +228,15 @@ module.exports = (app, uuid, DB, Request, access) => {
 
     app.get('/orders', acceso, (req, res, next) => {
         let orders_ = DB.getList('orders')
+        res.render('orders', {
+            orders_
+        });
+    });
+    
+    
+     app.get('/orderspending', acceso, (req, res, next) => {
+        let orders_ = DB.findObject('orders',"Pendiente",'state',true) 
+        console.log(orders_)
         res.render('orders', {
             orders_
         });
@@ -225,7 +268,11 @@ module.exports = (app, uuid, DB, Request, access) => {
             date
         }
         if (!drink || !date) {
-            res.status(400).send('Error Campos Vacios');
+            //res.status(400).send('Error Campos Vacios');
+             res.render('Error', {
+            link:'takeorder',
+            mensaje:'Error campos Vacios'
+        });
             return;
         }
         DB.insert("orders", neworder)
@@ -246,4 +293,13 @@ module.exports = (app, uuid, DB, Request, access) => {
             orders_
         });
     })
+    
+    app.get('/aboutus', acceso, (req, res, next) => {
+        res.render('aboutus',);
+    });
+    
+     app.get('/aboutproyect', acceso, (req, res, next) => {
+        res.render('aboutproyect',);
+    });
+    
 }

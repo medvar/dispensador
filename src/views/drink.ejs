@@ -18,15 +18,15 @@
                         </div>
                         <div class="form-group col-12">
                             <label for="ingre1">Ingrediente 1</label>
-                            <input type="number" name="ingre1" class="form-control" id="ingre1" placeholder="Ingrediente 1" required value="<%=drink.ingre1%>">
+                            <input type="number" name="ingre1" class="form-control" onchange="cambio1()" min="0" max="375" id="ingre1" placeholder="Ingrediente 1" required value="<%=drink.ingre1%>">
                         </div>
                         <div class="form-group col-12">
                             <label for="ingre2">Ingrediente 2</label>
-                            <input type="number" name="ingre2" class="form-control" id="ingre2" placeholder="Ingrediente 2" required value="<%=drink.ingre2%>">
+                            <input type="number" name="ingre2" class="form-control" min="0" max="375" onchange="cambio2()"  id="ingre2" placeholder="Ingrediente 2" required value="<%=drink.ingre2%>">
                         </div>
                         <div class="form-group col-12">
                             <label for="ingre3">Ingrediente 3</label>
-                            <input type="number" name="ingre3" class="form-control" id="ingre3" placeholder="Ingrediente 3" required value="<%=drink.ingre3%>">
+                            <input type="number" name="ingre3" class="form-control" min="0" max="375" onchange="cambio3()"  id="ingre3" placeholder="Ingrediente 3" required value="<%=drink.ingre3%>">
                         </div>
                         <input type="submit" class="btn btn-outline-success" value="Aceptar">
                     </div>
@@ -34,4 +34,5 @@
             </div>
         </div>
         </div>
+         <script src="/js/drink.js"></script>
         <% include partials/footer %>

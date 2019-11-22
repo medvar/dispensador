@@ -23,27 +23,51 @@ mySerial.on('open', function() {
 
 let da = "";
 mySerial.on('data', function(data) {
-    console.log(data.toString());
-    if (value == '?')//enviamos la bebida mas antigua
-    {
-        let order = getOrder()
-        if(order){        
-        mySerial.write(order.id);
-        mySerial.write('¡');}
-    }else //obtenemos el id 
+    console.log(data.toString())
+    
+     //obtenemos el id 
      {
-            let l = 0;
-            for (let i = 0; i < value.length; i++) {
-                if (value[i] == '!')
-                    l = 1;
-                else
-                    da += dataSerial.value[i];
-            }
-            if (l == 1) {//actualizamos los datos
+            for (let i = 0; i < data.toString().length; i++) {
+                if (data.toString()[i]== '?')//enviamos la bebida mas antigua
+    {
+        let order = DB.getOrder()
+        if(order){    
+        mySerial.write(order.id);
+        mySerial.write('!');
+        
+        let drink = DB.findObject('drinks',order.drink)
+        let tem = parseInt(drink.ingre1)!=0 ?(parseInt(drink.ingre1)/41)*1000:0
+        mySerial.write(tem.toString());
+        mySerial.write('/');
+        tem = parseInt(drink.ingre2)!=0 ?(parseInt(drink.ingre2)/41)*1000:0
+        mySerial.write(tem.toString());
+        mySerial.write('/');
+        tem = parseInt(drink.ingre3)!=0 ?(parseInt(drink.ingre3)/41)*1000:0
+        mySerial.write(tem.toString());
+        mySerial.write('/');
+        console.log("Eviado")
+        }  
+        else
+        {
+        mySerial.write('!');
+        console.log("Vacio")
+        }  
+        da="";
+    }else if (data.toString()[i] == '!')//actualizamos los datos
+                {
+                console.log(da);
                 let finishorder= DB.findObject('orders',da) 
                 finishorder['state']= 'Finalizado'
                 DB.update("orders", finishorder)
                 da = "";
+                }
+                else if(data.toString()[i] == '*')
+                {
+                console.log("Finalizado")
+                da="";
+                }
+                else
+                    da += data.toString()[i];
             }
         }
     
