@@ -21,7 +21,7 @@
         "nodemon": "^1.19.4",
         "request": "^2.88.0",
         "serialport": "^8.0.5",
-        "socket.io": "^2.3.0",
+        "socket.io": "^2.4.0",
         "uuid": "^3.3.3"
     },
     "devDependencies": {
